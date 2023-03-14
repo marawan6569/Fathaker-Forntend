@@ -35,7 +35,9 @@ body {
     color: #f7f7f7;
     font-size: 16px;
 }
-
+.nav-link.active {
+    color: #c45e36 !important;
+}
 .nav-link i {
     margin-right: 10px;
     font-size: 18px;
