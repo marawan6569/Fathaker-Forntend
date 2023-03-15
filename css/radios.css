@@ -196,8 +196,9 @@
     object-fit: cover;
 }
 
-.song-details {
+.radio-details {
     flex-grow: 1;
+    margin-right: 20px;
 }
 
 .category-name {
