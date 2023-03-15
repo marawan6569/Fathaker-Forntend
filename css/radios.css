@@ -86,7 +86,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(2, 89, 85, 0.8);
+    background-color: rgba(2, 89, 85, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,6 +128,36 @@
     text-align: center;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+
+.card.active {
+    box-shadow: 0 0 10px rgba(2, 89, 85, 0.8);
+}
+
+.card.active .card-caption {
+    background-color: #025955;
+}
+
+.card.active .play-button {
+    background-color: #fff;
+    color: #c45e36;
+}
+
+.card.active .card-overlay {
+    background-color: rgba(2, 89, 85, 0.5);
+}
+
+
+.card .play-button::before {
+    content: "\f04b";
+    font-family: "Font Awesome 5 Free", serif;
+    font-weight: 900;
+    font-size: 18px;
+}
+
+.card.active .play-button::before {
+    content: "\f04c";
 }
 
 /* end radio card */
