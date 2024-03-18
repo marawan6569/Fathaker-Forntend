@@ -62,7 +62,7 @@
                         </div>
                     </div>
 
-                    <div class="play-btn play"></div>
+                    <div class="play-btn play" data-src="https://Qurango.net/radio/yasser_aldosari"></div>
                 </div>
                 <div class="col-12 p-3 my-2 radio-card">
 
@@ -77,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="play-btn play"></div>
+                    <div class="play-btn play" data-src="https://qurango.net/radio/hani_arrifai"></div>
                 </div>
                 <div class="col-12 p-3 my-2 radio-card">
 
@@ -92,22 +92,7 @@
                         </div>
                     </div>
 
-                    <div class="play-btn play"></div>
-                </div>
-                <div class="col-12 p-3 my-2 radio-card">
-
-                    <div class="radio-info">
-                        <img class="radio-img" src="img/img_4.png" alt="radio image">
-                        <div class="info mx-3">
-                            <p class="name">سعيد القحطاني</p>
-                            <ul class="tags">
-                                <li class="tag">حفص عن عاصم</li>
-                                <li class="tag">ترتيل</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="play-btn play"></div>
+                    <div class="play-btn play" data-src="https://qurango.net/radio/nabil_al_rifay"></div>
                 </div>
                 <div class="col-12 p-3 my-2 radio-card">
 
@@ -123,7 +108,7 @@
                         </div>
                     </div>
 
-                    <div class="play-btn play"></div>
+                    <div class="play-btn play" data-src="https://qurango.net/radio/nasser_alqatami"></div>
                 </div>
 
             </div>
@@ -132,34 +117,6 @@
 
         <div class="" style="height: 5vh;"></div>
 
-        <div class="container" id="music-player-container">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <div class="music-player d-none">
-                        <div class="player-info">
-                            <div class="album-cover">
-                                <img src="" id="radio-img" alt="Radio Cover">
-                            </div>
-                            <div class="radio-details">
-                                <h3 class="category-name" id="radio-category"></h3>
-                                <h3 class="radio-name" id="radio-name"></h3>
-                            </div>
-                        </div>
-                        <div class="player-controls">
-                            <button class="play-btn"><i class="fas fa-play"></i></button>
-                            <div class="progress-bar-container">
-                                <input type="range" class="progress-bar" value="0" min="0" max="100">
-                                <div class="time-display">
-                                    <span class="current-time">0:00</span> / <span class="total-time">0:00</span>
-                                </div>
-                            </div>
-                            <button class="volume-btn"><i class="fas fa-volume"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
 
         <footer class="footer">
             <div class="container">
@@ -206,59 +163,8 @@
                 </div>
             </div>
         </footer>
-        <script>
-            function setTopToParentOffset(element) {
-                // Get the parent element
-                const parent = element.parentElement.parentElement;
-                element.style.width = parent.offsetWidth + 'px';
 
-                // Get the parent's y-offset
-                const parentY = parent.getBoundingClientRect().y;
-
-                if (parentY < 0)
-                {
-                    element.style.top = window.scrollY + 'px';
-                }
-                else
-                {
-                    element.style.top = parentY + 'px';
-
-                    const emptyDiv = document.createElement('div');
-                    if (!parent.firstElementChild.classList.contains("emptyDiv") )
-                    {
-                        emptyDiv.style.height = activeCard.offsetHeight + 14 + 'px';
-                        emptyDiv.classList.add('emptyDiv')
-                        parent.insertBefore(emptyDiv, parent.firstChild);
-                    }
-                }
-            }
-
-            let activeCard = document.querySelector('.radio-card.active') || document.createElement('div');
-
-            window.addEventListener('scroll', () => setTopToParentOffset(activeCard));
-
-            const playButtons = document.querySelectorAll('.play-btn');
-            playButtons.forEach(btn => {
-                btn.addEventListener('click', ev => {
-                    if (btn.classList.contains('play')){
-                        playButtons.forEach(btn => {btn.classList.remove('pause'); btn.classList.add('play');})
-                        ev.target.classList.remove('play')
-                        ev.target.classList.add('pause')
-
-                        activeCard.classList.remove('active')
-                        ev.target.parentElement.classList.add('active')
-                        activeCard = document.querySelector('.radio-card.active');
-                        setTopToParentOffset(activeCard)
-                    } else{
-                        playButtons.forEach(btn => {btn.classList.remove('pause'); btn.classList.add('play');})
-                        ev.target.classList.remove('pause')
-                        ev.target.classList.add('play')
-                    }
-                })
-            })
-
-        </script>
         <script src="js/bootstrap.bundle.min.js"></script>
-<!--        <script src="js/radios.js"></script>-->
+        <script src="js/radios.js"></script>
     </body>
 </html>

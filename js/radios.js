@@ -1,106 +1,80 @@
-const swiper = new Swiper('.swiper-container', {
-    loop: true,
-    slidesPerView: 1,
-    spaceBetween: 0,
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-        640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-        },
-        992: {
-            slidesPerView: 3,
-            spaceBetween: 40,
-        },
-        1024: {
-            slidesPerView: 4,
-            spaceBetween: 60,
-        },
-        1400: {
-            slidesPerView: 5,
-            spaceBetween: 60,
-        },
-    }
-});
 
-
-const cards = document.querySelectorAll('.card')
 const audio = new Audio();
-const playBtn = document.querySelector('.play-btn');
-const progressBar = document.querySelector('.progress-bar');
-const currentTimeDisplay = document.querySelector('.current-time');
-const totalTimeDisplay = document.querySelector('.total-time');
-const radioName = document.getElementById('radio-name');
-const radioCategory = document.getElementById('radio-category');
-const radioImg = document.getElementById('radio-img');
-const musicPlayer = document.querySelector('.music-player');
 const footer = document.querySelector('footer');
+const playButtons = document.querySelectorAll('.play-btn');
 let isPlaying = false;
+let activeCard = document.querySelector('.radio-card.active') || document.createElement('div');
+
 
 function playAudio() {
     audio.play();
     isPlaying = true;
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
 }
 
 function pauseAudio() {
     audio.pause();
     isPlaying = false;
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
 }
 
 function togglePlay() {
     isPlaying ? pauseAudio() : playAudio();
 }
 
-function updateProgressBar() {
-    progressBar.value = (audio.currentTime / audio.duration) * 100;
-    const minutes = Math.floor(audio.currentTime / 60);
-    const seconds = Math.floor(audio.currentTime % 60);
-    currentTimeDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+function setAudioSource(src) {
+    audio.src = src
 }
 
-function setTotalTime() {
-    // const minutes = Math.floor(audio.duration / 60);
-    // const seconds = Math.floor(audio.duration % 60);
-    // totalTimeDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    totalTimeDisplay.innerText = "-";
+function setTopToParentOffset(element) {
+    // Get the parent element
+    const parent = element.parentElement.parentElement;
+    element.style.width = parent.offsetWidth + 'px';
+
+    // Get the parent's y-offset
+    const parentY = parent.getBoundingClientRect().y;
+
+    if (parentY < 0)
+    {
+        element.style.top = window.scrollY + 'px';
+    }
+    else
+    {
+        element.style.top = parentY + 'px';
+
+        const emptyDiv = document.createElement('div');
+        if (!parent.firstElementChild.classList.contains("emptyDiv") )
+        {
+            emptyDiv.style.height = activeCard.offsetHeight + 14 + 'px';
+            emptyDiv.classList.add('emptyDiv')
+            parent.insertBefore(emptyDiv, parent.firstChild);
+        }
+    }
 }
 
-playBtn.addEventListener('click', togglePlay);
-audio.addEventListener('timeupdate', updateProgressBar);
-audio.addEventListener('loadedmetadata', setTotalTime);
-progressBar.addEventListener('input', () => {
-    audio.currentTime = (progressBar.value / 100) * audio.duration;
-});
 
+window.addEventListener('scroll', () => setTopToParentOffset(activeCard));
 
-function updateMusicPlayerPosition() {
-    // const footerHeight = footer.offsetHeight;
-    const visibleFooterHeight = window.innerHeight + window.scrollY - footer.offsetTop;
-    const musicPlayerBottom = visibleFooterHeight < 0 ? 0 : visibleFooterHeight;
-    musicPlayer.style.bottom = `${musicPlayerBottom}px`;
-}
-window.addEventListener('scroll', updateMusicPlayerPosition);
-window.addEventListener('resize', updateMusicPlayerPosition);
+playButtons.forEach(btn => {
+    btn.addEventListener('click', ev => {
+        if (btn.classList.contains('play')){
+            playButtons.forEach(btn => {btn.classList.remove('pause'); btn.classList.add('play');})
+            ev.target.classList.remove('play')
+            ev.target.classList.add('pause')
 
-cards.forEach(card => {
-   card.addEventListener('click', ev => {
-       cards.forEach(el => {el.classList.remove('active')})
-       card.classList.add('active')
-       musicPlayer.classList.remove('d-none')
-       updateRadioInfo(card.dataset.category, card.dataset.name, card.dataset.img, card.dataset.url)
-   })
-});
+            activeCard.classList.remove('active')
+            ev.target.parentElement.classList.add('active')
+            activeCard = document.querySelector('.radio-card.active');
+            setTopToParentOffset(activeCard)
+        } else{
+            playButtons.forEach(btn => {btn.classList.remove('pause'); btn.classList.add('play');})
+            ev.target.classList.remove('pause')
+            ev.target.classList.add('play')
+        }
 
-function updateRadioInfo(category, name, img, stream_url){
-    radioCategory.innerHTML = category ? category : "";
-    radioName.innerHTML = name;
-    radioImg.setAttribute('src', img);
-    audio.src = stream_url;
-    togglePlay()
-
-}
+        if (audio.src.toLowerCase() === btn.dataset.src.toLowerCase()){
+            togglePlay()
+        } else {
+            setAudioSource(btn.dataset.src)
+            playAudio()
+        }
+    })
+})
