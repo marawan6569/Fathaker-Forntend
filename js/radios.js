@@ -1,7 +1,53 @@
 
+// start render radios //
+const radiosContainer = document.getElementById("radios-container");
+let radios = [
+    {name: "ياسر الدوسري", src: "https://Qurango.net/radio/yasser_aldosari", img:"img/img_1.png", tags: ["حفص عن عاصم", "تجويد"]},
+    {name: "هاني الرفاعي", src: "https://qurango.net/radio/hani_arrifai", img:"img/img_2.png", tags: ["حفص عن عاصم", "تجويد"]},
+    {name: "نبيل الرفاعي", src: "https://qurango.net/radio/nabil_al_rifay", img:"img/img_3.png", tags: ["حفص عن عاصم", "تجويد"]},
+    {name: "ناصر القطامي", src: "https://qurango.net/radio/nasser_alqatami", img:"img/img_5.png", tags: ["حفص عن عاصم", "تجويد"]},
+]
+
+function tag(tag){ return `<li class="tag">${tag}</li>` }
+
+function renderTags(tags) {
+    return `${tags.map( tag => { return `<li class="tag">${tag}</li>` }).join(" ")}`
+}
+
+function renderRadio(radio) {
+
+    return `
+           <div class="col-12 p-3 my-2 radio-card">
+        
+                <div class="radio-info">
+                    <img class="radio-img" src="${radio.img}" alt="radio image">
+                    <div class="info mx-3">
+                        <p class="name">${radio.name}</p>
+                        <ul class="tags">
+                            ${renderTags(radio.tags)}
+                        </ul>
+                    </div>
+                </div>
+        
+                <div class="play-btn play" data-src="${radio.src}"></div>
+           </div>
+
+    `
+
+}
+
+function renderRadiosList(radiosList) {
+    return radiosList.map(renderRadio).join("\n")
+}
+
+radiosContainer.innerHTML = renderRadiosList(radios)
+
+// end render radios //
+
+
+// start audio controls //
 const audio = new Audio();
-const footer = document.querySelector('footer');
-const playButtons = document.querySelectorAll('.play-btn');
+let playButtons = document.querySelectorAll('.play-btn');
 let isPlaying = false;
 let activeCard = document.querySelector('.radio-card.active') || document.createElement('div');
 
@@ -78,3 +124,5 @@ playButtons.forEach(btn => {
         }
     })
 })
+
+// end audio controls //
