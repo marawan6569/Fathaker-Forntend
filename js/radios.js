@@ -1,12 +1,7 @@
 
 // start render radios //
 const radiosContainer = document.getElementById("radios-container");
-let radios = [
-    {name: "ياسر الدوسري", src: "https://Qurango.net/radio/yasser_aldosari", img:"img/img_1.png", tags: ["حفص عن عاصم", "تجويد"]},
-    {name: "هاني الرفاعي", src: "https://qurango.net/radio/hani_arrifai", img:"img/img_2.png", tags: ["حفص عن عاصم", "تجويد"]},
-    {name: "نبيل الرفاعي", src: "https://qurango.net/radio/nabil_al_rifay", img:"img/img_3.png", tags: ["حفص عن عاصم", "تجويد"]},
-    {name: "ناصر القطامي", src: "https://qurango.net/radio/nasser_alqatami", img:"img/img_5.png", tags: ["حفص عن عاصم", "تجويد"]},
-]
+let playButtons = document.querySelectorAll('.play-btn');
 
 function tag(tag){ return `<li class="tag">${tag}</li>` }
 
@@ -37,17 +32,69 @@ function renderRadio(radio) {
 }
 
 function renderRadiosList(radiosList) {
-    return radiosList.map(renderRadio).join("\n")
+    if (radiosList.length > 0) {
+        radiosContainer.innerHTML = radiosList.map(renderRadio).join("\n")
+        playButtons = document.querySelectorAll('.play-btn');
+
+        // This block of code should be in audio control section
+        playButtons.forEach(btn => {
+            btn.addEventListener('click', ev => {
+                if (btn.classList.contains('play')) {
+                    playButtons.forEach(btn => {
+                        btn.classList.remove('pause');
+                        btn.classList.add('play');
+                    })
+                    ev.target.classList.remove('play')
+                    ev.target.classList.add('pause')
+
+                    activeCard.classList.remove('active')
+                    ev.target.parentElement.classList.add('active')
+                    activeCard = document.querySelector('.radio-card.active');
+                    setTopToParentOffset(activeCard)
+                } else {
+                    playButtons.forEach(btn => {
+                        btn.classList.remove('pause');
+                        btn.classList.add('play');
+                    })
+                    ev.target.classList.remove('pause')
+                    ev.target.classList.add('play')
+                }
+
+                if (audio.src.toLowerCase() === btn.dataset.src.toLowerCase()) {
+                    togglePlay()
+                } else {
+                    setAudioSource(btn.dataset.src)
+                    playAudio()
+                }
+            })
+        })
+    } else {
+        radiosContainer.innerHTML = `<p style='font-size: 2rem;font-weight: bold;text-align: center; margin-top: 5rem;'>نأسف!... لم نستطع العثور علي نتائج مطابقة لبحثك</p>`
+    }
 }
 
-radiosContainer.innerHTML = renderRadiosList(radios)
+renderRadiosList(radios)
+
 
 // end render radios //
 
+// start search //
+const searchBar = document.getElementById("search")
+function search(query, list) {
+    query = query.trim().toLowerCase(); // Convert query to lowercase and remove leading/trailing spaces
+    return list.filter(radio => {
+        // Check if any of the radio's properties match the query
+        return radio.name.toLowerCase().includes(query) ||
+            radio.tags.some(tag => tag.toLowerCase().includes(query));
+    });
+}
+
+searchBar.addEventListener("input", ()=> { renderRadiosList(search(searchBar.value, radios)) })
+
+// end search //
 
 // start audio controls //
 const audio = new Audio();
-let playButtons = document.querySelectorAll('.play-btn');
 let isPlaying = false;
 let activeCard = document.querySelector('.radio-card.active') || document.createElement('div');
 
@@ -99,30 +146,5 @@ function setTopToParentOffset(element) {
 
 window.addEventListener('scroll', () => setTopToParentOffset(activeCard));
 
-playButtons.forEach(btn => {
-    btn.addEventListener('click', ev => {
-        if (btn.classList.contains('play')){
-            playButtons.forEach(btn => {btn.classList.remove('pause'); btn.classList.add('play');})
-            ev.target.classList.remove('play')
-            ev.target.classList.add('pause')
-
-            activeCard.classList.remove('active')
-            ev.target.parentElement.classList.add('active')
-            activeCard = document.querySelector('.radio-card.active');
-            setTopToParentOffset(activeCard)
-        } else{
-            playButtons.forEach(btn => {btn.classList.remove('pause'); btn.classList.add('play');})
-            ev.target.classList.remove('pause')
-            ev.target.classList.add('play')
-        }
-
-        if (audio.src.toLowerCase() === btn.dataset.src.toLowerCase()){
-            togglePlay()
-        } else {
-            setAudioSource(btn.dataset.src)
-            playAudio()
-        }
-    })
-})
 
 // end audio controls //

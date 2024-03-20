@@ -46,6 +46,15 @@
 
 
         <div class="container mt-5 overflow-hidden" style="min-height: 100vh;">
+
+
+            <div class="row">
+                <label class="position-relative">
+                    <input type="text" class="col-12 my-3 search-input" id="search" placeholder="ابحث عن إذاعة">
+                    <i class="fa fa-search search-icon"></i>
+                </label>
+            </div>
+
             <div class="row" id="radios-container">
 
             </div>
@@ -98,6 +107,14 @@
             </div>
         </footer>
 
+        <script>
+            let radios = [
+                {name: "ياسر الدوسري", src: "https://Qurango.net/radio/yasser_aldosari", img:"img/img_1.png", tags: ["حفص عن عاصم", "تجويد"]},
+                {name: "هاني الرفاعي", src: "https://qurango.net/radio/hani_arrifai", img:"img/img_2.png", tags: ["حفص عن عاصم", "تجويد"]},
+                {name: "نبيل الرفاعي", src: "https://qurango.net/radio/nabil_al_rifay", img:"img/img_3.png", tags: ["حفص عن عاصم", "تجويد"]},
+                {name: "ناصر القطامي", src: "https://qurango.net/radio/nasser_alqatami", img:"img/img_5.png", tags: ["حفص عن عاصم", "تجويد"]},
+            ]
+        </script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/radios.js"></script>
     </body>
