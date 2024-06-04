@@ -124,7 +124,6 @@ function setAudioSource(src) {
 function setTopToParentOffset(element) {
     // Get the parent element
     const parent = element.parentElement.parentElement;
-    console.log(window.innerWidth < 768)
     element.style.width = window.innerWidth < 768? (parent.offsetWidth - 32) + 'px': parent.offsetWidth + 'px';
 
     // Get the parent's y-offset
