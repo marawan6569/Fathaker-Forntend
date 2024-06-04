@@ -248,7 +248,7 @@
 
 /* Start small screens */
 @media (max-width: 768px) {
-    .container { padding: 0 1rem !important; }
+    #radios-container { padding: 0 1rem !important; }
     .radio-img
     {
         width: 75px;
